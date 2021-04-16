@@ -16,7 +16,8 @@ Model.prototype.getData = function (req, callback) {
   const githubPath = req.params.id.split('::')
   const user = githubPath[0]
   const repo = githubPath[1]
-  const path = githubPath.slice(2).join('/')
+  const branch = githubPath[2] // Updated branch parameter for main vs master
+  const path = githubPath.slice(3).join('/')
 
   if (!repo || !path) callback(new Error('The "id" parameter must be of form "user::repo::path::to::file"'))
 
@@ -24,6 +25,7 @@ Model.prototype.getData = function (req, callback) {
   geohub.repo({
     user,
     repo,
+    branch,
     path,
     token: ghtoken
   }, (err, data) => {
@@ -35,7 +37,7 @@ Model.prototype.getData = function (req, callback) {
     // Add metadata
     geojson.metadata = geojson.metadata || {}
     geojson.metadata.title = geojson.metadata.name = githubPath[githubPath.length - 1]
-    geojson.metadata.description = `GeoJSON from https://raw.github.com/${user}/${repo}/master/${path}.geojson`
+    geojson.metadata.description = `GeoJSON from https://raw.github.com/${user}/${repo}/${branch}/${path}.geojson`
     geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
     callback(null, geojson)
   })

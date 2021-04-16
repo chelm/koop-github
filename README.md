@@ -44,13 +44,13 @@ koop.server.listen(1338, function () {
 Once `koop-github` is registered as provider and you've started your Koop server, you can request GeoJSON files in Github repositories using this pattern.  Note that the path within the repo uses `::` as a directory separator:
 
 ```
-/github/{organization name}::{repository name}::{folder::path::to::geojson}/FeatureServer/0/query
+/github/{organization name}::{repository name}::{branch}::{folder::path::to::geojson}/FeatureServer/0/query
 ```
 
 so for example:
 
 ```
-http://localhost:1338/github/koopjs::geodata::countries::mexico/FeatureServer/0/query
+http://localhost:1338/github/koopjs::geodata::master::countries::mexico/FeatureServer/0/query
 ```
 
 ## Test
